@@ -10,13 +10,18 @@ import {
   Typography,
 } from "@material-ui/core";
 
+import PlaceDetails from "../PlaceDetails/PlaceDetails";
+
 import useStyles from "./style.js";
 
-const List = () => {
+const List = ({places}) => {
   const classes = useStyles();
 
   const [type, setType] = useState("restaurants");
   const [rating, setRating] = useState("");
+
+  console.log('places from list');
+  console.log(places);
 
   return (
     <div className={classes.container}>
@@ -49,6 +54,17 @@ const List = () => {
           <MenuItem value={5}>Above 5</MenuItem>
         </Select>
       </FormControl>
+
+      <Grid container spacing={3} className={classes.list}>
+        {places?.map((placeItem, index) => {
+          console.log(placeItem)
+          return (
+            <Grid item key={index} xs={12}>
+              <PlaceDetails place={placeItem} />
+            </Grid>
+          );
+        })}
+      </Grid>
     </div>
   );
 };
