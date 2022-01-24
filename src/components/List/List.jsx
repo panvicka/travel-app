@@ -14,13 +14,13 @@ import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./style.js";
 
-const List = ({places}) => {
+const List = ({ places }) => {
   const classes = useStyles();
 
   const [type, setType] = useState("restaurants");
   const [rating, setRating] = useState("");
 
-  console.log('places from list');
+  console.log("places from list");
   console.log(places);
 
   return (
@@ -57,12 +57,16 @@ const List = ({places}) => {
 
       <Grid container spacing={3} className={classes.list}>
         {places?.map((placeItem, index) => {
-          console.log(placeItem)
-          return (
-            <Grid item key={index} xs={12}>
-              <PlaceDetails place={placeItem} />
-            </Grid>
-          );
+          console.log(placeItem);
+          if (placeItem.name && placeItem.photo) {
+            return (
+              <Grid item key={index} xs={12}>
+                <PlaceDetails place={placeItem} />
+              </Grid>
+            );
+          } else {
+            return "";
+          }
         })}
       </Grid>
     </div>
