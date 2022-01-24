@@ -12,6 +12,7 @@ interface IProps {
   setCoordinates: React.Dispatch<React.SetStateAction<Coords>>;
   setBounds: React.Dispatch<React.SetStateAction<Bounds>>;
   coordinates: Coords;
+  setChildClicked: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 declare module "react" {
@@ -22,7 +23,7 @@ declare module "react" {
   }
 }
 
-const Map = ({ setCoordinates, setBounds, coordinates, places }: IProps) => {
+const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }: IProps) => {
   const classes = useStyles();
   const isDesktop = useMediaQuery("(min-width: 600px)");
 
@@ -44,7 +45,9 @@ const Map = ({ setCoordinates, setBounds, coordinates, places }: IProps) => {
           setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
-        // onChildClick={""}
+        onChildClick={(child) => {
+          setChildClicked(child);
+        }}
       >
         {places?.map((place, index) => {
           if (place.name && place.photo) {

@@ -10,10 +10,14 @@ import { ArrowUpward } from "@material-ui/icons";
 
 interface IProps {
   place: Place;
+  selected: boolean;
+  refProp: React.RefObject<HTMLInputElement>;
 }
 
-const PlaceDetails = ({ place }: IProps) => {
+const PlaceDetails = ({ place, selected, refProp }: IProps) => {
   let classes = useStyles();
+
+  if (selected) refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <Card elevation={6}>
