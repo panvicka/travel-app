@@ -1,11 +1,8 @@
-export interface Bounds {
-  ne: Coordinates;
-  sw: Coordinates;
-}
+import { Coords } from "google-map-react";
 
-export interface Coordinates {
-  lat: number | null;
-  lng: number | null;
+export interface Bounds {
+  ne: Coords;
+  sw: Coords;
 }
 
 interface PlaceImage {

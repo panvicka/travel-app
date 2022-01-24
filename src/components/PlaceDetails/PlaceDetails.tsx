@@ -30,6 +30,13 @@ const PlaceDetails = ({ place }: IProps) => {
         </Typography>
 
         <Box display="flex" justifyContent="space-between">
+          {place.rating && <Rating value={Number(place.rating)} readOnly />}
+          <Typography gutterBottom variant="subtitle1">
+            {place.num_reviews ? `out of ${place.num_reviews}` : ``}
+          </Typography>
+        </Box>
+
+        <Box display="flex" justifyContent="space-between">
           <Typography variant="subtitle1">Price</Typography>
           <Typography gutterBottom variant="subtitle1">
             {place.price_level}
