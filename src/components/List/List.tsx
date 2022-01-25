@@ -1,32 +1,36 @@
 import React, { useState, useEffect, createRef } from "react";
-import {
-  CircularProgress,
-  Grid,
-  Topography,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Typography,
-} from "@material-ui/core";
+import { CircularProgress, Grid, InputLabel, MenuItem, FormControl, Select, Typography } from "@material-ui/core";
 
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./style.js";
+import { Place } from "../../types";
 
-const List = ({ places, childClicked, isLoading }) => {
+interface IProps {
+  places: Array<Place>;
+  childClicked: number | null;
+  isLoading: boolean;
+}
+
+enum SelectedFilter {
+  RESTAURANT = "restaurants",
+  HOTELS = "hotels",
+  ATTRACTIONS = "attractions",
+}
+
+const List = ({ places, childClicked, isLoading }: IProps) => {
   const classes = useStyles();
 
-  const [type, setType] = useState("restaurants");
+  const [type, setType] = useState<string>("restaurants");
   const [rating, setRating] = useState("");
 
-  const [elementRefs, setElementRefs] = useState([]);
+  const [elementRefs, setElementRefs] = useState<Array<React.RefObject<HTMLInputElement>> | []>([]);
 
   useEffect(() => {
     if (!places) return;
 
     let createdRefs = 0;
-    const refs = [];
+    const refs: Array<React.RefObject<HTMLInputElement>> = [];
     for (let i = 0; i < places.length; i++) {
       if (places[i].name && places[i].photo) {
         createdRefs++;
@@ -53,12 +57,12 @@ const List = ({ places, childClicked, isLoading }) => {
               <Select
                 value={type}
                 onChange={(e) => {
-                  setType(e.target.value);
+                  setType((e.target.value as string) ? (e.target.value as string) : SelectedFilter.RESTAURANT);
                 }}
               >
-                <MenuItem value="restaurants">Restaurants</MenuItem>
-                <MenuItem value="hotels">Hotels</MenuItem>
-                <MenuItem value="attractions">Attractions</MenuItem>
+                <MenuItem value={SelectedFilter.RESTAURANT}>{SelectedFilter.RESTAURANT}</MenuItem>
+                <MenuItem value={SelectedFilter.HOTELS}>{SelectedFilter.HOTELS}</MenuItem>
+                <MenuItem value={SelectedFilter.ATTRACTIONS}>{SelectedFilter.ATTRACTIONS}</MenuItem>
               </Select>
             </FormControl>
 
@@ -67,7 +71,7 @@ const List = ({ places, childClicked, isLoading }) => {
               <Select
                 value={rating}
                 onChange={(e) => {
-                  setRating(e.target.value);
+                  setRating((e.target.value as string) ? (e.target.value as string) : "");
                 }}
               >
                 <MenuItem value={0}>All</MenuItem>
