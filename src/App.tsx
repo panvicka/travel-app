@@ -66,18 +66,25 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    if (bounds) {
+    if (bounds.sw.lat !== 0 && bounds.ne.lat !== 0) {
       getPlaceData(type, bounds.sw, bounds.ne).then((data) => {
-        setPlaces(data as Array<Place>);
+        // only use items with name, photo and reviews
+        let fullData = data?.filter((item: Place) => {
+          if (item.name && item.num_reviews && item.photo) {
+            return true;
+          }
+          return false;
+        });
+        setPlaces(fullData as Array<Place>);
         setIsLoading(false);
       });
     }
-  }, [coordinates, bounds, type]);
+  }, [bounds, type]);
 
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header setCoordinates={setCoordinates} />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
           <List
