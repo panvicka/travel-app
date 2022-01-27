@@ -1,8 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { Coords } from "google-map-react";
-import { Place } from "../types";
-
-const url = "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
+import { Place, SelectedFilter } from "../types";
 
 const mockData: Place[] = [
   {
@@ -6041,7 +6039,7 @@ const mockData: Place[] = [
   },
 ];
 
-export const getPlaceData = async (sw: Coords, ne: Coords) => {
+export const getPlaceData = async (type: SelectedFilter, sw: Coords, ne: Coords) => {
   if (sw.lat === 0 && sw.lng === 0 && ne.lat === 0 && ne.lng === 0) {
     return;
   }
@@ -6060,10 +6058,12 @@ export const getPlaceData = async (sw: Coords, ne: Coords) => {
       },
     };
 
-    //   const {
-    //     data: { data },
-    //   } = await axios.get(url, options as any as AxiosRequestConfig);
-    //   return data;
+    const url = `https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`;
+    console.log("fetching data from API");
+    // const {
+    //   data: { data },
+    // } = await axios.get(url, options as any as AxiosRequestConfig);
+    // return data;
     return mockData;
   } catch (error) {
     console.log(error);

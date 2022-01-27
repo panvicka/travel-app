@@ -8,7 +8,7 @@ import { getPlaceData } from "./api";
 import Header from "./components/Header/Header";
 import List from "./components/List/List";
 import Map from "./components/Map/Map";
-import { Bounds, Place } from "./types";
+import { Bounds, Place, SelectedFilter } from "./types";
 import { Coords } from "google-map-react";
 
 function App() {
@@ -18,6 +18,9 @@ function App() {
   const [childClicked, setChildClicked] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [type, setType] = useState<SelectedFilter>(SelectedFilter.RESTAURANT);
+  const [rating, setRating] = useState<string | null>("");
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setCoordinates({ lat: latitude, lng: longitude });
@@ -25,16 +28,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(coordinates, bounds);
     setIsLoading(true);
     if (bounds) {
-      getPlaceData(bounds.sw, bounds.ne).then((data) => {
-        console.log(data);
+      getPlaceData(type, bounds.sw, bounds.ne).then((data) => {
         setPlaces(data as Array<Place>);
         setIsLoading(false);
       });
     }
-  }, [coordinates, bounds]);
+  }, [coordinates, bounds, type]);
 
   return (
     <>
@@ -42,7 +43,15 @@ function App() {
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
-          <List places={places} childClicked={childClicked} isLoading={isLoading} />
+          <List
+            places={places}
+            childClicked={childClicked}
+            isLoading={isLoading}
+            type={type}
+            setType={setType}
+            setRating={setRating}
+            rating={rating}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map

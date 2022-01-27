@@ -6,7 +6,6 @@ import Rating from "@material-ui/lab/Rating";
 
 import useStyles from "./style";
 import { Place } from "../../types";
-import { ArrowUpward } from "@material-ui/icons";
 
 interface IProps {
   place: Place;

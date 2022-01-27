@@ -4,37 +4,30 @@ import { CircularProgress, Grid, InputLabel, MenuItem, FormControl, Select, Typo
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./style.js";
-import { Place } from "../../types";
+import { Place, SelectedFilter } from "../../types";
 
 interface IProps {
   places: Array<Place>;
   childClicked: number | null;
   isLoading: boolean;
+  type: SelectedFilter;
+  setType: React.Dispatch<React.SetStateAction<SelectedFilter>>;
+  rating: string | null;
+  setRating: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-enum SelectedFilter {
-  RESTAURANT = "restaurants",
-  HOTELS = "hotels",
-  ATTRACTIONS = "attractions",
-}
-
-const List = ({ places, childClicked, isLoading }: IProps) => {
+const List = ({ places, childClicked, isLoading, type, rating, setType, setRating }: IProps) => {
   const classes = useStyles();
-
-  const [type, setType] = useState<string>("restaurants");
-  const [rating, setRating] = useState("");
 
   const [elementRefs, setElementRefs] = useState<Array<React.RefObject<HTMLInputElement>> | []>([]);
 
   useEffect(() => {
     if (!places) return;
 
-    let createdRefs = 0;
     const refs: Array<React.RefObject<HTMLInputElement>> = [];
     for (let i = 0; i < places.length; i++) {
       if (places[i].name && places[i].photo) {
-        createdRefs++;
-        refs[createdRefs] = createRef();
+        refs[i] = createRef();
       }
     }
 
@@ -57,7 +50,11 @@ const List = ({ places, childClicked, isLoading }: IProps) => {
               <Select
                 value={type}
                 onChange={(e) => {
-                  setType((e.target.value as string) ? (e.target.value as string) : SelectedFilter.RESTAURANT);
+                  setType(
+                    (e.target.value as string as SelectedFilter)
+                      ? (e.target.value as string as SelectedFilter)
+                      : SelectedFilter.RESTAURANT
+                  );
                 }}
               >
                 <MenuItem value={SelectedFilter.RESTAURANT}>{SelectedFilter.RESTAURANT}</MenuItem>

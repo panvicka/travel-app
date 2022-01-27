@@ -5,6 +5,12 @@ export interface Bounds {
   sw: Coords;
 }
 
+export enum SelectedFilter {
+  RESTAURANT = "restaurants",
+  HOTELS = "hotels",
+  ATTRACTIONS = "attractions",
+}
+
 interface PlaceImage {
   width: string;
   url: string;

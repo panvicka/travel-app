@@ -1,11 +1,8 @@
 import React from "react";
 import GoogleMapReact, { Coords } from "google-map-react";
-import { Paper, Typography, useMediaQuery } from "@material-ui/core";
-import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
-import Rating from "@material-ui/lab/Rating";
-
 import useStyles from "./style.js";
 import { Place, Bounds } from "../../types";
+import MapMarker from "./MapMarker";
 
 interface IProps {
   places: Array<Place>;
@@ -25,54 +22,42 @@ declare module "react" {
 
 const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }: IProps) => {
   const classes = useStyles();
-  const isDesktop = useMediaQuery("(min-width: 600px)");
 
   const URLkeys: GoogleMapReact.BootstrapURLKeys = {
     key: process.env.REACT_APP_GOOGLE_MAP_API_KEY ? process.env.REACT_APP_GOOGLE_MAP_API_KEY : "",
     language: "en",
   };
 
+  const handleMarkerClick = (index: number) => {
+    console.log(index);
+    setChildClicked(index);
+  };
+
   return (
     <div className={classes.mapContainer}>
       <GoogleMapReact
         bootstrapURLKeys={URLkeys}
-        defaultCenter={coordinates}
+        // defaultCenter={coordinates}
         center={coordinates}
         defaultZoom={14}
         margin={[50, 50, 50, 50]}
-        // options={""}
         onChange={(e) => {
           setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
-        }}
-        onChildClick={(child) => {
-          setChildClicked(child);
         }}
       >
         {places?.map((place, index) => {
           if (place.name && place.photo) {
             return (
-              <div
+              <MapMarker
+                options={""}
                 key={index}
-                className={classes.markerContainer}
-                lat={Number(place.latitude ? place.latitude : 0)}
+                index={index}
                 lng={Number(place.longitude ? place.longitude : 0)}
-              >
-                {!isDesktop ? (
-                  <LocationOnOutlinedIcon color="primary" fontSize="large" />
-                ) : (
-                  <Paper elevation={3} className={classes.paper}>
-                    <Typography variant="subtitle2">{place.name}</Typography>
-                    <img
-                      className={classes.pointer}
-                      src={place.photo ? place.photo.images.large.url : ""}
-                      alt={place.name ? place.name : "restaurant picture"}
-                    />
-                    {}
-                    {place.rating && <Rating size="small" value={Number(place.rating)} readOnly />}
-                  </Paper>
-                )}
-              </div>
+                lat={Number(place.latitude ? place.latitude : 0)}
+                place={place}
+                onMarkerClick={handleMarkerClick}
+              ></MapMarker>
             );
           } else {
             return "";
