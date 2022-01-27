@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 
 import { CssBaseline, Grid } from "@material-ui/core";
 
-import { getPlaceData } from "./api";
+import { getPlaceData, getWeatherData } from "./api";
 
 import Header from "./components/Header/Header";
 import List from "./components/List/List";
 import Map from "./components/Map/Map";
-import { Bounds, Place, SelectedFilter, RatingText, RatingFilter } from "./types";
+import { Bounds, Place, SelectedFilter, RatingText, RatingFilter, WeatherTypResponse } from "./types";
 import { Coords } from "google-map-react";
 
 const ratings: Array<RatingFilter> = [
@@ -32,6 +32,8 @@ const ratings: Array<RatingFilter> = [
 
 function App() {
   const [places, setPlaces] = useState<Array<Place> | []>([]);
+  const [weatherData, setWeatherData] = useState<WeatherTypResponse | null>(null);
+
   const [filteredPlaces, setFilteredPlaces] = useState<Array<Place> | []>([]);
 
   const [coordinates, setCoordinates] = useState<Coords>({ lat: 0, lng: 0 });
@@ -67,6 +69,10 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     if (bounds.sw.lat !== 0 && bounds.ne.lat !== 0) {
+      getWeatherData(coordinates.lat, coordinates.lng).then((data) => {
+        console.log(data);
+        setWeatherData(data as WeatherTypResponse);
+      });
       getPlaceData(type, bounds.sw, bounds.ne).then((data) => {
         // only use items with name, photo and reviews
         let fullData = data?.filter((item: Place) => {
@@ -104,6 +110,7 @@ function App() {
             coordinates={coordinates}
             places={filteredPlaces.length ? filteredPlaces : places}
             setChildClicked={setChildClicked}
+            weatherData={weatherData ? weatherData : null}
           />
         </Grid>
       </Grid>

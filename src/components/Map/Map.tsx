@@ -1,8 +1,9 @@
 import React from "react";
 import GoogleMapReact, { Coords } from "google-map-react";
 import useStyles from "./style.js";
-import { Place, Bounds } from "../../types";
+import { Place, Bounds, WeatherTypResponse } from "../../types";
 import MapMarker from "./MapMarker";
+import WeatherMark from "./WeatherMark";
 
 interface IProps {
   places: Array<Place>;
@@ -10,6 +11,7 @@ interface IProps {
   setBounds: React.Dispatch<React.SetStateAction<Bounds>>;
   coordinates: Coords;
   setChildClicked: React.Dispatch<React.SetStateAction<number | null>>;
+  weatherData: WeatherTypResponse | null;
 }
 
 declare module "react" {
@@ -20,7 +22,7 @@ declare module "react" {
   }
 }
 
-const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }: IProps) => {
+const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, weatherData }: IProps) => {
   const classes = useStyles();
 
   const URLkeys: GoogleMapReact.BootstrapURLKeys = {
@@ -62,6 +64,10 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked }
           } else {
             return "";
           }
+        })}
+
+        {weatherData?.list?.map((data, index) => {
+          return <WeatherMark key={index} options={""} weatherDataObject={data} lat={data.coord.lat} lng={data.coord.lon} />;
         })}
       </GoogleMapReact>
     </div>

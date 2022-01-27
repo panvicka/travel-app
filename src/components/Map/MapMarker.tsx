@@ -15,7 +15,7 @@ interface IProps {
   lng: number;
 }
 
-const MapMarker = ({ lat, lng, place, options, index, onMarkerClick }: IProps): JSX.Element => {
+const MapMarker = ({ place, index, onMarkerClick }: IProps): JSX.Element => {
   const [marker, setMarker] = React.useState<google.maps.Marker>();
 
   const classes = useStyles();
@@ -31,12 +31,6 @@ const MapMarker = ({ lat, lng, place, options, index, onMarkerClick }: IProps): 
       }
     };
   }, [marker]);
-
-  useEffect(() => {
-    if (marker) {
-      marker.setOptions(options);
-    }
-  }, [marker, options]);
 
   return (
     <div className={classes.markerContainer}>

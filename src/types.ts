@@ -169,3 +169,48 @@ export interface Place {
     banner_text: string | null;
   };
 }
+
+export interface WeatherResponseObject {
+  id: number;
+  name: string;
+  coord: {
+    lat: number;
+    lon: number;
+  };
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+  };
+  dt: number;
+  wind: {
+    speed: number;
+    deg: number;
+  };
+  sys: {
+    country: string;
+  };
+  rain: any;
+  snow: any;
+  clouds: {
+    all: number;
+  };
+  weather: [
+    {
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }
+  ];
+}
+
+export interface WeatherTypResponse {
+  cod: string;
+  count: number;
+  list: Array<WeatherResponseObject>;
+  message: string;
+}
