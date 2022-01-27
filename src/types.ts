@@ -11,6 +11,18 @@ export enum SelectedFilter {
   ATTRACTIONS = "attractions",
 }
 
+export enum RatingText {
+  RATING_ALL = "all",
+  RATING_ABOVE_3 = "above 3",
+  RATING_ABOVE_4 = "above 4",
+  RATING_ABOVE_5 = "5",
+}
+
+export interface RatingFilter {
+  ratingText: RatingText;
+  ratingValue: number;
+}
+
 interface PlaceImage {
   width: string;
   url: string;

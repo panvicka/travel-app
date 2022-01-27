@@ -4,7 +4,7 @@ import { CircularProgress, Grid, InputLabel, MenuItem, FormControl, Select, Typo
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./style.js";
-import { Place, SelectedFilter } from "../../types";
+import { Place, SelectedFilter, RatingText } from "../../types";
 
 interface IProps {
   places: Array<Place>;
@@ -12,8 +12,8 @@ interface IProps {
   isLoading: boolean;
   type: SelectedFilter;
   setType: React.Dispatch<React.SetStateAction<SelectedFilter>>;
-  rating: string | null;
-  setRating: React.Dispatch<React.SetStateAction<string | null>>;
+  rating: RatingText;
+  setRating: React.Dispatch<React.SetStateAction<RatingText>>;
 }
 
 const List = ({ places, childClicked, isLoading, type, rating, setType, setRating }: IProps) => {
@@ -68,13 +68,18 @@ const List = ({ places, childClicked, isLoading, type, rating, setType, setRatin
               <Select
                 value={rating}
                 onChange={(e) => {
-                  setRating((e.target.value as string) ? (e.target.value as string) : "");
+                  console.log(e.target.value);
+                  setRating(
+                    (e.target.value as string as RatingText)
+                      ? (e.target.value as string as RatingText)
+                      : RatingText.RATING_ALL
+                  );
                 }}
               >
-                <MenuItem value={0}>All</MenuItem>
-                <MenuItem value={3}>Above 3</MenuItem>
-                <MenuItem value={4}>Above 4</MenuItem>
-                <MenuItem value={5}>Above 5</MenuItem>
+                <MenuItem value={RatingText.RATING_ALL}>{RatingText.RATING_ALL}</MenuItem>
+                <MenuItem value={RatingText.RATING_ABOVE_3}>{RatingText.RATING_ABOVE_3}</MenuItem>
+                <MenuItem value={RatingText.RATING_ABOVE_4}>{RatingText.RATING_ABOVE_4}</MenuItem>
+                <MenuItem value={RatingText.RATING_ABOVE_5}>{RatingText.RATING_ABOVE_5}</MenuItem>
               </Select>
             </FormControl>
 
