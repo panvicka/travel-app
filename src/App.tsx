@@ -1,4 +1,3 @@
-import "./App.css";
 import React, { useEffect, useState } from "react";
 
 import { CssBaseline, Grid } from "@material-ui/core";
@@ -70,7 +69,6 @@ function App() {
     setIsLoading(true);
     if (bounds.sw.lat !== 0 && bounds.ne.lat !== 0) {
       getWeatherData(coordinates.lat, coordinates.lng).then((data) => {
-        console.log(data);
         setWeatherData(data as WeatherTypResponse);
       });
       getPlaceData(type, bounds.sw, bounds.ne).then((data) => {
