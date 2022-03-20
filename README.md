@@ -2,6 +2,8 @@
 
 App that uses several API to show the user the best restaurants in the area.
 
+![screen recording](./assets/screen_recording.gif)
+
 ### Technology
 
 - frontend **ReactJS** with **Typescript**
